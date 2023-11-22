@@ -1,4 +1,6 @@
 import numpy as np
+import matplotlib.pyplot as plt
+from mpl_toolkits.mplot3d import Axes3D
 
 def initialize_points(num_points):
     points = np.random.rand(num_points, 3)
@@ -14,7 +16,7 @@ def calculate_repulsive_force(points):
             if i != j:
                 delta = points[i] - points[j]
                 distance = np.linalg.norm(delta)
-                force = delta / (distance ** 3)
+                force = delta / (distance ** 2)
                 forces[i] += force
 
     return forces
@@ -37,15 +39,47 @@ def calculate_minimum_distance(points):
 num_points = 10
 points = initialize_points(num_points)
 
+best = np.inf
+bPoints = np.random.rand(num_points, 3)
+
 for iteration in range(100):
     forces = calculate_repulsive_force(points)
     update_points(points, forces)
 
     min_distance = calculate_minimum_distance(points)
     print(f"Iteration {iteration + 1}: Minimum Distance = {min_distance}")
+    if (min_distance < best):
+        bPoints = points
+        min_distance = best
+
     for p in points:
         if (abs(np.linalg.norm(p) - 1) > 0.01):
             print("error")
-            return 
-        print(p)
+            break
+        # print(p)
 
+def plot_sphere(ax):
+    phi, theta = np.mgrid[0.0:np.pi:1000j, 0.0:2.0*np.pi:1000j]
+    x_sphere = np.sin(phi) * np.cos(theta)
+    y_sphere = np.sin(phi) * np.sin(theta)
+    z_sphere = np.cos(phi)
+
+    ax.plot_surface(x_sphere, y_sphere, z_sphere, alpha=0.2, color='blue', rstride=100, cstride=100)
+
+fig = plt.figure(figsize=(8, 8))
+ax = fig.add_subplot(111, projection='3d')
+
+# Plotting the sphere
+plot_sphere(ax)
+
+# Plotting the points on the sphere
+ax.scatter3D(bPoints[:, 0], bPoints[:, 1], bPoints[:, 2], c='red', marker='o')
+
+# Setting aspect ratio to be equal to ensure the sphere looks spherical
+ax.set_box_aspect([np.ptp(axis) for axis in [ax.get_xlim(), ax.get_ylim(), ax.get_zlim()]])
+ax.set_title('Points on the Sphere')
+ax.set_xlabel('X')
+ax.set_ylabel('Y')
+ax.set_zlabel('Z')
+
+plt.show()
