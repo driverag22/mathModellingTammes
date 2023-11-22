@@ -44,5 +44,8 @@ for iteration in range(100):
     min_distance = calculate_minimum_distance(points)
     print(f"Iteration {iteration + 1}: Minimum Distance = {min_distance}")
     for p in points:
+        if (abs(np.linalg.norm(p) - 1) > 0.01):
+            print("error")
+            return 
         print(p)
 
