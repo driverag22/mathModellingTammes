@@ -79,12 +79,12 @@ for iteration in range(iterations):
         #print(p)
 
 def plot_sphere(ax):
-    phi, theta = np.mgrid[0.0:np.pi:1000j, 0.0:2.0*np.pi:1000j]
-    x_sphere = np.sin(phi) * np.cos(theta)
-    y_sphere = np.sin(phi) * np.sin(theta)
-    z_sphere = np.cos(phi)
-
-    ax.plot_surface(x_sphere, y_sphere, z_sphere, alpha=0.2, color='blue', rstride=100, cstride=100)
+    u, v = np.mgrid[0:2*np.pi:50j, 0:np.pi:50j]
+    x = np.cos(u)*np.sin(v)
+    y = np.sin(u)*np.sin(v)
+    z = np.cos(v)
+    # alpha controls opacity
+    ax.plot_surface(x, y, z, color="b", alpha=0.3)
 
 # Setting aspect ratio to be equal to ensure the sphere looks spherical
 #ax.set_box_aspect([np.ptp(axis) for axis in [ax.get_xlim(), ax.get_ylim(), ax.get_zlim()]])
@@ -105,7 +105,7 @@ def update(frame): # A function to update the frame in the animation
 
     # Plot the points for the current frame
     pts = sequence[frame]
-    ax.scatter(pts[:, 0], pts[:, 1], pts[:, 2], s=30, c='blue', marker='o')
+    ax.scatter(pts[:, 0], pts[:, 1], pts[:, 2], s=30, c='red', marker='o')
     plot_sphere(ax)
 
 # Set up the 3D plot
