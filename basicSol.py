@@ -59,12 +59,12 @@ for iteration in range(100):
         # print(p)
 
 def plot_sphere(ax):
-    phi, theta = np.mgrid[0.0:np.pi:1000j, 0.0:2.0*np.pi:1000j]
-    x_sphere = np.sin(phi) * np.cos(theta)
-    y_sphere = np.sin(phi) * np.sin(theta)
-    z_sphere = np.cos(phi)
-
-    ax.plot_surface(x_sphere, y_sphere, z_sphere, alpha=0.2, color='blue', rstride=100, cstride=100)
+    u, v = np.mgrid[0:2*np.pi:50j, 0:np.pi:50j]
+    x = np.cos(u)*np.sin(v)
+    y = np.sin(u)*np.sin(v)
+    z = np.cos(v)
+    # alpha controls opacity
+    ax.plot_surface(x, y, z, color="b", alpha=0.3)
 
 fig = plt.figure(figsize=(8, 8))
 ax = fig.add_subplot(111, projection='3d')
