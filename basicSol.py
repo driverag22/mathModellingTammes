@@ -37,35 +37,33 @@ def calculate_minimum_distance(points):
 
     return min_distance
 
-# Example usage:
-for num_points in range(2,11):
-# num_points = 2
+best = {}
+lowerRange = 2
+upperRange = 30
+maxIter = 500
+for num_points in range(lowerRange,upperRange+1):
+    best[num_points] = -np.inf
+for num_points in range(lowerRange,upperRange+1):
+    print(num_points)
     points = initialize_points(num_points)
     
-    best = -np.inf
-    bPoints = np.random.rand(num_points, 3)
-    
-    for iteration in range(100):
+    for iteration in range(maxIter):
         forces = calculate_repulsive_force(points)
         points = update_points(points, forces)
     
-        min_distance = calculate_minimum_distance(points)
-        # print(f"Iteration {iteration + 1}: Minimum Distance = {min_distance}")
-        if (min_distance > best):
-            bPoints = points
-            best = min_distance
-    
-        for p in points:
-            if (abs(np.linalg.norm(p) - 1) > 0.01):
-                print("error")
-                break
-            # print(p)
-    
-    print(num_points)
-    # print(best)
-    # print(bPoints)
-    print(calculate_minimum_distance(bPoints))
-    print()
+        min_distance_ = calculate_minimum_distance(points)
+        if (min_distance_ > best[num_points]):
+            best[num_points] = min_distance_
+
+f = open("basicSol.txt", "a")
+for num_points in range(lowerRange, upperRange+1):
+    f.write(str(num_points))
+    f.write("\n")
+    f.write(str(best[num_points]))
+    f.write("\n")
+    f.write("\n")
+f.close()
+
 # def plot_sphere(ax):
 #     u, v = np.mgrid[0:2*np.pi:50j, 0:np.pi:50j]
 #     x = np.cos(u)*np.sin(v)

@@ -29,6 +29,7 @@ def calculate_random_walk(num_points, r1 = 0.01):
     return offset
         
 def update_points(points, forces, rand_walk, r1 = 1, step_size=0.1):
+    # points += (rand_walk + np.random.uniform(1-r1, 1+r1) * step_size * forces)
     points += (rand_walk + step_size * forces)
     points /= np.linalg.norm(points, axis=1)[:, None]
     return points
@@ -46,25 +47,38 @@ def calculate_minimum_distance(points):
 best = {}
 lowerRange = 2
 upperRange = 30
-maxIter = 2000
+maxIter = 1000
+# T = 500
+tDecConstant = (1/T)**(1/100)
 for num_points in range(lowerRange,upperRange+1):
     best[num_points] = -np.inf
 for num_points in range(lowerRange,upperRange+1):
     print(num_points)
     points = initialize_points(num_points)
+    ## r1 goes from 0.5 to 0.01
     r1 = 0.5 ## random walk param, offset each coordinate with U[-r1, r1]
-    c2 = 0.5 ## step size (force parameter)
-    r2 = 0 ## force randomness, multiply force by U[1-r2, 1+r2]
+
+    ## c2 goes from 0.01 to 0.5
+    c2 = 0.1 ## step size (force parameter)
+    r2 = 0.1 ## force randomness, multiply force by U[1-r2, 1+r2]
+    
     for iteration in range(maxIter):
+        # r1 *= np.log(T)/3
+        # c2 *= min(np.exp(1/T) - 1/10, 0.1)
         forces = calculate_repulsive_force(points)
         walk = calculate_random_walk(num_points, r1)
         points = update_points(points, forces, walk, r2, c2)
     
-        min_distance = calculate_minimum_distance(points)
-        if (min_distance > best[num_points]):
-            best[num_points] = min_distance
+        min_distance_ = calculate_minimum_distance(points)
+        if (min_distance_ > best[num_points]):
+            best[num_points] = min_distance_
+        T *= tDecConstant # decrease temp
+        r1 = 0.08
+        c2 = 0.1
+    
 
-f = open("output_genSol.txt", "a")
+
+f = open("results/ouput_simAnnealing.txt", "a")
 for num_points in range(lowerRange, upperRange+1):
     f.write(str(num_points))
     f.write("\n")
