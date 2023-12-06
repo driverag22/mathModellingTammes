@@ -45,14 +45,14 @@ def calculate_minimum_distance(points):
 
 best = {}
 lowerRange = 2
-upperRange = 30
+upperRange = 100
 maxIter = 2000
 for num_points in range(lowerRange,upperRange+1):
     best[num_points] = -np.inf
 for num_points in range(lowerRange,upperRange+1):
     print(num_points)
     points = initialize_points(num_points)
-    r1 = 0.5 ## random walk param, offset each coordinate with U[-r1, r1]
+    r1 = 0.01 ## random walk param, offset each coordinate with U[-r1, r1]
     c2 = 0.5 ## step size (force parameter)
     r2 = 0 ## force randomness, multiply force by U[1-r2, 1+r2]
     for iteration in range(maxIter):
@@ -64,7 +64,7 @@ for num_points in range(lowerRange,upperRange+1):
         if (min_distance > best[num_points]):
             best[num_points] = min_distance
 
-f = open("output_genSol.txt", "a")
+f = open("results/output_genSol.txt", "a")
 for num_points in range(lowerRange, upperRange+1):
     f.write(str(num_points))
     f.write("\n")

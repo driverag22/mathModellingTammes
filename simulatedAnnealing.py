@@ -7,7 +7,7 @@ def initialize_points(num_points):
     points /= np.linalg.norm(points, axis=1)[:, None]
     return points
 
-def calculate_repulsive_force(points):
+def calculate_repulsive_force(points, power):
     num_points = len(points)
     forces = np.zeros_like(points)
 
@@ -16,7 +16,7 @@ def calculate_repulsive_force(points):
             if i != j:
                 delta = points[i] - points[j]
                 distance = np.linalg.norm(delta)
-                force = delta / (distance ** 2)
+                force = delta / (distance ** power)
                 forces[i] += force
 
     return forces
@@ -28,10 +28,10 @@ def calculate_random_walk(num_points, r1 = 0.01):
         offset[i] = np.array([np.random.uniform(-r1,r1), np.random.uniform(-r1,r1), np.random.uniform(-r1,r1)])
     return offset
         
-def update_points(points, forces, rand_walk, r1 = 1, step_size=0.1):
-    # points += (rand_walk + np.random.uniform(1-r1, 1+r1) * step_size * forces)
+def update_points(points, forces, rand_walk, step_size=0.1):
     points += (rand_walk + step_size * forces)
     points /= np.linalg.norm(points, axis=1)[:, None]
+    points *= 3
     return points
 
 def calculate_minimum_distance(points):
@@ -47,36 +47,39 @@ def calculate_minimum_distance(points):
 best = {}
 lowerRange = 2
 upperRange = 30
-maxIter = 1000
-# T = 500
-tDecConstant = (1/T)**(1/100)
+maxIter = 2000
+r1init = 2
+r1final = 0.001
+c2init = 0.05
+c2final = 1
+powerInitial = 1/2
+powerFinal = 4
+r1DecConstant = (r1final/r1init)**(1/maxIter)
+c2DecConstant = (c2final/c2init)**(1/maxIter)
+powerDecConstant = (powerFinal/powerInitial)**(1/maxIter)
 for num_points in range(lowerRange,upperRange+1):
     best[num_points] = -np.inf
 for num_points in range(lowerRange,upperRange+1):
     print(num_points)
     points = initialize_points(num_points)
-    ## r1 goes from 0.5 to 0.01
-    r1 = 0.5 ## random walk param, offset each coordinate with U[-r1, r1]
-
-    ## c2 goes from 0.01 to 0.5
-    c2 = 0.1 ## step size (force parameter)
-    r2 = 0.1 ## force randomness, multiply force by U[1-r2, 1+r2]
+    r1 = r1init ## random walk param, offset each coordinate with U[-r1, r1]
+    c2 = c2init ## step size (force parameter)
+    power = powerInitial
     
     for iteration in range(maxIter):
-        # r1 *= np.log(T)/3
-        # c2 *= min(np.exp(1/T) - 1/10, 0.1)
-        forces = calculate_repulsive_force(points)
+        forces = calculate_repulsive_force(points, power)
         walk = calculate_random_walk(num_points, r1)
-        points = update_points(points, forces, walk, r2, c2)
+        points = update_points(points, forces, walk, c2)
     
         min_distance_ = calculate_minimum_distance(points)
         if (min_distance_ > best[num_points]):
             best[num_points] = min_distance_
-        T *= tDecConstant # decrease temp
-        r1 = 0.08
-        c2 = 0.1
+        r1 *= r1DecConstant
+        c2 *= c2DecConstant
+        power *= powerDecConstant
     
-
+for num_points in range(lowerRange,upperRange+1):
+    best[num_points] /= 3
 
 f = open("results/ouput_simAnnealing.txt", "a")
 for num_points in range(lowerRange, upperRange+1):

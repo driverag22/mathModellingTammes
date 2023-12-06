@@ -39,8 +39,8 @@ def calculate_minimum_distance(points):
 
 best = {}
 lowerRange = 2
-upperRange = 30
-maxIter = 500
+upperRange = 100
+maxIter = 2000
 for num_points in range(lowerRange,upperRange+1):
     best[num_points] = -np.inf
 for num_points in range(lowerRange,upperRange+1):
@@ -55,7 +55,7 @@ for num_points in range(lowerRange,upperRange+1):
         if (min_distance_ > best[num_points]):
             best[num_points] = min_distance_
 
-f = open("basicSol.txt", "a")
+f = open("results/output_basicSol.txt", "a")
 for num_points in range(lowerRange, upperRange+1):
     f.write(str(num_points))
     f.write("\n")

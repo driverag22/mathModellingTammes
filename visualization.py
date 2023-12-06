@@ -23,9 +23,9 @@ basicSolDf = genDataFrame("./results/output_basicSol.txt")
 
 
 # Plot the values against indices
-plt.plot(simAnnealingDf['Index'], simAnnealingDf['Value'], marker='o', linestyle='-', color='b')
-plt.plot(genSolDf['Index'], genSolDf['Value'], marker='o', linestyle='-', color='r')
-plt.plot(basicSolDf['Index'], basicSolDf['Value'], marker='o', linestyle='-', color='g')
+plt.plot(simAnnealingDf['Index'], simAnnealingDf['Value'], marker='o', linestyle='', color='b')
+plt.plot(genSolDf['Index'], genSolDf['Value'], marker='o', linestyle='', color='r')
+plt.plot(basicSolDf['Index'], basicSolDf['Value'], marker='o', linestyle='', color='g')
 plt.xlabel('Number of points')
 plt.ylabel('Value')
 plt.title('Values vs. Number of points')
