@@ -28,16 +28,10 @@ def plot_sphere(ax):
     # alpha controls opacity
     ax.plot_surface(x, y, z, color="b", alpha=0.3)
 
-def initialize_points(num_points):
-    points = np.random.rand(num_points, 3)-0.5
-    points /= np.linalg.norm(points, axis=1)[:, None]
-    return points
-
 fig = plt.figure(figsize=(8, 8))
 ax = fig.add_subplot(111, projection='3d')
 
-points = generate_points(16)
-#points = initialize_points(16)
+points = generate_points(10, 1, False)
 
 # Plotting the sphere
 plot_sphere(ax)

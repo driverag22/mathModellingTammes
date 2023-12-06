@@ -1,10 +1,21 @@
 import numpy as np
+import math
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 
-def initialize_points(num_points):
-    points = np.random.rand(num_points, 3)
+def generate_points(n, w = 1, random=False): #Generates points on a kind of screwed up spiral not really
+    # w is number of windings,
+    # random determines whether angles are random. Should be off lol
+    k = n-2
+    points = [[0,0,1.0],[0,0,-1.0]] #Two points are deterministic
+    anglelist = [w*l*2*np.pi/k for l in range(k)]
+    if random:
+        np.random.shuffle(anglelist)
+    for i in range(k):
+        points.append([np.sin(anglelist[i]),np.cos(anglelist[i]),1-2*i/k])
+    points = np.array(points)
     points /= np.linalg.norm(points, axis=1)[:, None]
+    points *= 3 
     return points
 
 def calculate_repulsive_force(points):
@@ -24,6 +35,7 @@ def calculate_repulsive_force(points):
 def update_points(points, forces, step_size=0.1):
     points += step_size * forces
     points /= np.linalg.norm(points, axis=1)[:, None]
+    points *= 3
     return points
 
 def calculate_minimum_distance(points):
@@ -39,13 +51,13 @@ def calculate_minimum_distance(points):
 
 best = {}
 lowerRange = 2
-upperRange = 100
+upperRange = 25
 maxIter = 2000
 for num_points in range(lowerRange,upperRange+1):
     best[num_points] = -np.inf
 for num_points in range(lowerRange,upperRange+1):
     print(num_points)
-    points = initialize_points(num_points)
+    points = generate_points(num_points, math.ceil(num_points/10), False)
     
     for iteration in range(maxIter):
         forces = calculate_repulsive_force(points)
@@ -54,6 +66,9 @@ for num_points in range(lowerRange,upperRange+1):
         min_distance_ = calculate_minimum_distance(points)
         if (min_distance_ > best[num_points]):
             best[num_points] = min_distance_
+
+for num_points in range(lowerRange,upperRange+1):
+    best[num_points] /= 3
 
 f = open("results/output_basicSol.txt", "a")
 for num_points in range(lowerRange, upperRange+1):

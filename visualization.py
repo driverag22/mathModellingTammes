@@ -17,15 +17,19 @@ def genDataFrame(file_path):
         values.append(value)
     return pd.DataFrame({'Index': indices, 'Value': values})
 
+# genSolDf = genDataFrame('./results/output_genSol.txt')
 simAnnealingDf = genDataFrame("./results/ouput_simAnnealing.txt")
-genSolDf = genDataFrame('./results/output_genSol.txt')
 basicSolDf = genDataFrame("./results/output_basicSol.txt")
-
+length = len(basicSolDf['Index'])
+diff = pd.DataFrame({'Index': [i for i in range(2,length)], 'Value': [0 for i in range(2,length)]})
+diff['Value'] = simAnnealingDf['Value'] - basicSolDf['Value']
 
 # Plot the values against indices
-plt.plot(simAnnealingDf['Index'], simAnnealingDf['Value'], marker='o', linestyle='', color='b')
-plt.plot(genSolDf['Index'], genSolDf['Value'], marker='o', linestyle='', color='r')
-plt.plot(basicSolDf['Index'], basicSolDf['Value'], marker='o', linestyle='', color='g')
+# plt.plot(simAnnealingDf['Index'], simAnnealingDf['Value'], marker='o', linestyle='', color='b')
+# plt.plot(genSolDf['Index'], genSolDf['Value'], marker='o', linestyle='', color='r')
+# plt.plot(basicSolDf['Index'], basicSolDf['Value'], marker='o', linestyle='', color='g')
+plt.plot(diff['Index'], diff['Value'], marker='o', linestyle='', color='r')
+plt.axhline(y = 0, color = 'b', linestyle = '--')
 plt.xlabel('Number of points')
 plt.ylabel('Value')
 plt.title('Values vs. Number of points')
