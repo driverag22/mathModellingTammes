@@ -1,10 +1,21 @@
 import numpy as np
+import math
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 
-def initialize_points(num_points):
-    points = np.random.rand(num_points, 3)-0.5 # I added the -0.5 as then each point can come from any octant of the sphere
+def generate_points(n, w = 1, random=False): #Generates points on a kind of screwed up spiral not really
+    # w is number of windings,
+    # random determines whether angles are random. Should be off lol
+    k = n-2
+    points = [[0,0,1.0],[0,0,-1.0]] #Two points are deterministic
+    anglelist = [w*l*2*np.pi/k for l in range(k)]
+    if random:
+        np.random.shuffle(anglelist)
+    for i in range(k):
+        points.append([np.sin(anglelist[i]),np.cos(anglelist[i]),1-2*i/k])
+    points = np.array(points)
     points /= np.linalg.norm(points, axis=1)[:, None]
+    points *= 3
     return points
 
 def calculate_repulsive_force(points):
@@ -25,12 +36,13 @@ def calculate_random_walk(num_points, r1 = 0.01):
     offset = np.random.rand(num_points, 3)
     for i in range(num_points):
         # x,y,z deltas
-        offset[i] = np.array([np.random.uniform(-r1,r1), np.random.uniform(-r1,r1), np.random.uniform(-r1,r1)])
+        offset[i] = np.random.normal(0,r1,3)
     return offset
         
 def update_points(points, forces, rand_walk, r1 = 1, step_size=0.1):
     points += (rand_walk + step_size * forces)
     points /= np.linalg.norm(points, axis=1)[:, None]
+    points *= 3
     return points
 
 def calculate_minimum_distance(points):
@@ -46,23 +58,23 @@ def calculate_minimum_distance(points):
 best = {}
 lowerRange = 2
 upperRange = 100
-maxIter = 2000
+maxIter = 20000
 for num_points in range(lowerRange,upperRange+1):
     best[num_points] = -np.inf
 for num_points in range(lowerRange,upperRange+1):
     print(num_points)
-    points = initialize_points(num_points)
+    points = generate_points(num_points, math.ceil(num_points/10), False)
     r1 = 0.01 ## random walk param, offset each coordinate with U[-r1, r1]
     c2 = 0.5 ## step size (force parameter)
-    r2 = 0 ## force randomness, multiply force by U[1-r2, 1+r2]
     for iteration in range(maxIter):
         forces = calculate_repulsive_force(points)
         walk = calculate_random_walk(num_points, r1)
-        points = update_points(points, forces, walk, r2, c2)
+        points = update_points(points, forces, walk, c2)
     
         min_distance = calculate_minimum_distance(points)
         if (min_distance > best[num_points]):
             best[num_points] = min_distance
+    best[num_points] /= 3
 
 f = open("results/output_genSol.txt", "a")
 for num_points in range(lowerRange, upperRange+1):

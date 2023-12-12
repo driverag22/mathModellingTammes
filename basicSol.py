@@ -51,8 +51,8 @@ def calculate_minimum_distance(points):
 
 best = {}
 lowerRange = 2
-upperRange = 25
-maxIter = 2000
+upperRange = 100
+maxIter = 10000
 for num_points in range(lowerRange,upperRange+1):
     best[num_points] = -np.inf
 for num_points in range(lowerRange,upperRange+1):

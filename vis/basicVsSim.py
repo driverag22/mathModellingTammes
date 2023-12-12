@@ -18,8 +18,8 @@ def genDataFrame(file_path):
     return pd.DataFrame({'Index': indices, 'Value': values})
 
 # genSolDf = genDataFrame('./results/output_genSol.txt')
-simAnnealingDf = genDataFrame("./results/ouput_simAnnealing.txt")
-basicSolDf = genDataFrame("./results/output_basicSol.txt")
+simAnnealingDf = genDataFrame("../results/ouput_simAnnealing.txt")
+basicSolDf = genDataFrame("../results/output_basicSol.txt")
 length = len(basicSolDf['Index'])
 diff = pd.DataFrame({'Index': [i for i in range(2,length)], 'Value': [0 for i in range(2,length)]})
 diff['Value'] = simAnnealingDf['Value'] - basicSolDf['Value']
@@ -33,6 +33,7 @@ plt.axhline(y = 0, color = 'b', linestyle = '--')
 plt.xlabel('Number of points')
 plt.ylabel('Value')
 plt.title('Values vs. Number of points')
-plt.legend(["simAnnealing", "genSol", "basicSol"])
 plt.grid(True)
+m = diff['Value'].max() * 1.2
+plt.ylim(-m,m)
 plt.show()

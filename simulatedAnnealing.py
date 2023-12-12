@@ -36,7 +36,8 @@ def calculate_random_walk(num_points, r1 = 0.01):
     offset = np.random.rand(num_points, 3)
     for i in range(num_points):
         # x,y,z deltas
-        offset[i] = np.array([np.random.uniform(-r1,r1), np.random.uniform(-r1,r1), np.random.uniform(-r1,r1)])
+        # offset[i] = np.array([np.random.uniform(-r1,r1), np.random.uniform(-r1,r1), np.random.uniform(-r1,r1)])
+        offset[i] = np.random.normal(0,r1,3)
     return offset
         
 def update_points(points, forces, rand_walk, step_size=0.1):
@@ -57,14 +58,14 @@ def calculate_minimum_distance(points):
 
 best = {}
 lowerRange = 2
-upperRange = 25
-maxIter = 2000
-r1init = 2
+upperRange = 100
+maxIter = 20000
+r1init = 5
 r1final = 0.001
 c2init = 0.05
-c2final = 1
+c2final = 5
 powerInitial = 1/2
-powerFinal = 4
+powerFinal =  5
 r1DecConstant = (r1final/r1init)**(1/maxIter)
 c2DecConstant = (c2final/c2init)**(1/maxIter)
 powerDecConstant = (powerFinal/powerInitial)**(1/maxIter)
@@ -88,9 +89,8 @@ for num_points in range(lowerRange,upperRange+1):
         r1 *= r1DecConstant
         c2 *= c2DecConstant
         power *= powerDecConstant
-    
-for num_points in range(lowerRange,upperRange+1):
     best[num_points] /= 3
+    print(best[num_points])
 
 f = open("results/ouput_simAnnealing.txt", "a")
 for num_points in range(lowerRange, upperRange+1):
