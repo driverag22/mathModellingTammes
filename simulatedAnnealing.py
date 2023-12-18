@@ -2,6 +2,7 @@ import numpy as np
 import math
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
+from matplotlib.animation import FuncAnimation
 
 def generate_points(n, w = 1, random=False): #Generates points on a kind of screwed up spiral not really
     # w is number of windings,
@@ -58,9 +59,11 @@ def calculate_minimum_distance(points):
 
 best = {}
 lowerRange = 2
-upperRange = 100
-maxIter = 20000
-r1init = 5
+upperRange = 70
+maxIter = 500
+# frames = 500
+# sequence = []
+r1init = 1
 r1final = 0.001
 c2init = 0.05
 c2final = 5
@@ -79,6 +82,8 @@ for num_points in range(lowerRange,upperRange+1):
     power = powerInitial
     
     for iteration in range(maxIter):
+        # if iteration % (maxIter//frames) == 0:   # Adds the position of the points at certain times
+        #     sequence.append(points.copy())
         forces = calculate_repulsive_force(points, power)
         walk = calculate_random_walk(num_points, r1)
         points = update_points(points, forces, walk, c2)
@@ -91,8 +96,47 @@ for num_points in range(lowerRange,upperRange+1):
         power *= powerDecConstant
     best[num_points] /= 3
     print(best[num_points])
+    #def plot_sphere(ax):
+    #    u, v = np.mgrid[0:2*np.pi:50j, 0:np.pi:50j]
+    #    x = 3*np.cos(u)*np.sin(v)
+    #    y = 3*np.sin(u)*np.sin(v)
+    #    z = 3*np.cos(v)
+    #    # alpha controls opacity
+    #    ax.plot_surface(x, y, z, color="b", alpha=0.3)
+    
+    ## Setting aspect ratio to be equal to ensure the sphere looks spherical
+    ##ax.set_box_aspect([np.ptp(axis) for axis in [ax.get_xlim(), ax.get_ylim(), ax.get_zlim()]])
+    ##ax.set_title('Points on the Sphere')
+    ##ax.set_xlabel('X')
+    ##ax.set_ylabel('Y')
+    ##ax.set_zlabel('Z')
+    
+    ##plt.show()
+    
+    #def update(frame): # A function to update the frame in the animation
+    #    ax.cla()       # Clears previous plot
+    #    ax.set_box_aspect([np.ptp(axis) for axis in [ax.get_xlim(), ax.get_ylim(), ax.get_zlim()]])
+    #    ax.set_xlabel('X')
+    #    ax.set_ylabel('Y')
+    #    ax.set_zlabel('Z')
+    #    ax.set_title(f'Points on the Sphere. Frame {frame}')
+    
+    #    # Plot the points for the current frame
+    #    pts = sequence[frame]
+    #    ax.scatter(pts[:, 0], pts[:, 1], pts[:, 2], s=30, c='red', marker='o')
+    #    plot_sphere(ax)
+    
+    ## Set up the 3D plot
+    #fig = plt.figure()
+    #ax = fig.add_subplot(111, projection='3d')
+    
+    ## Create the animation
+    #animation = FuncAnimation(fig, update, frames=frames, interval=100)
+    
+    ## Display the animation
+    #plt.show()
 
-f = open("results/ouput_simAnnealing.txt", "a")
+f = open("results/200iter_simAnnealing.txt", "a")
 for num_points in range(lowerRange, upperRange+1):
     f.write(str(num_points))
     f.write("\n")

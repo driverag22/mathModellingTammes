@@ -23,17 +23,13 @@ length = len(genSolDf['Index'])
 diff = pd.DataFrame({'Index': [i for i in range(2,length)], 'Value': [0 for i in range(2,length)]})
 diff['Value'] = simAnnealingDf['Value'] - genSolDf['Value']
 
-# Plot the values against indices
-# plt.plot(simAnnealingDf['Index'], simAnnealingDf['Value'], marker='o', linestyle='', color='b')
-# plt.plot(genSolDf['Index'], genSolDf['Value'], marker='o', linestyle='', color='r')
-# plt.plot(genSolDf['Index'], genSolDf['Value'], marker='o', linestyle='', color='g')
 plt.plot(diff['Index'], diff['Value'], marker='o', linestyle='', color='r')
 plt.axhline(y = 0, color = 'b', linestyle = '--')
 plt.xlabel('Number of points')
-plt.ylabel('Value')
-plt.title('Values vs. Number of points')
-plt.legend(["simAnnealing", "genSol", "basicSol"])
+plt.ylabel('Difference')
+plt.title('Difference between simulated annealing and general solution')
 plt.grid(True)
-m = diff['Value'].max() * 1.2
+# m = diff['Value'].max() * 1.2
+m = 0.03
 plt.ylim(-m,m)
 plt.show()
