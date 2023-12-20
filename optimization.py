@@ -1,3 +1,61 @@
+import numpy as np
+import math
+import pandas as pd
+import random
+from io import StringIO
+
+def generate_points(n, w = 1, random=False): #Generates points on a kind of screwed up spiral not really
+    # w is number of windings,
+    # random determines whether angles are random. Should be off lol
+    k = n-2
+    points = [[0,0,1.0],[0,0,-1.0]] #Two points are deterministic
+    anglelist = [w*l*2*np.pi/k for l in range(k)]
+    if random:
+        np.random.shuffle(anglelist)
+    for i in range(k):
+        points.append([np.sin(anglelist[i]),np.cos(anglelist[i]),1-2*i/k])
+    points = np.array(points)
+    points /= np.linalg.norm(points, axis=1)[:, None]
+    points *= 3
+    return points
+
+def calculate_repulsive_force(points, power):
+    num_points = len(points)
+    forces = np.zeros_like(points)
+
+    for i in range(num_points):
+        for j in range(num_points):
+            if i != j:
+                delta = points[i] - points[j]
+                distance = np.linalg.norm(delta)
+                force = delta / (distance ** power)
+                forces[i] += force
+
+    return forces
+
+def calculate_random_walk(num_points, r1 = 0.01):
+    offset = np.random.rand(num_points, 3)
+    for i in range(num_points):
+        # x,y,z deltas
+        # offset[i] = np.array([np.random.uniform(-r1,r1), np.random.uniform(-r1,r1), np.random.uniform(-r1,r1)])
+        offset[i] = np.random.normal(0,r1,3)
+    return offset
+        
+def update_points_rw(points, forces, rand_walk, step_size=0.1, scale=1):
+    points += (rand_walk + step_size * forces)
+    points /= np.linalg.norm(points, axis=1)[:, None]
+    points *= scale
+    return points
+
+def calculate_minimum_distance(points):
+    min_distance = np.inf
+
+    for i in range(len(points)):
+        for j in range(i + 1, len(points)):
+            distance = np.linalg.norm(points[i] - points[j])
+            min_distance = min(distance, min_distance)
+
+    return min_distance
 def lit_sol(n):
     #add your own file derictory 
     with open('Best_Results/z.txt'.replace("z", str(n)), 'r') as file:
@@ -89,7 +147,8 @@ for i in range(1,2):
     
     powerf = 3+6*random.random()
     
-    scale = 1+6*random.random()
+    # scale = 1+6*random.random()
+    scale = 3
     
     df1 = simulation(7,200,r1s,r1f,c2s,c2f,powers,powerf,scale)
         
@@ -101,5 +160,6 @@ for i in range(1,2):
         
         score = score_1     
                   
-        parameter = {r1s,r1f,c2s,c2f,powers,powerf,scale}
-                  
+        parameter = [r1s,r1f,c2s,c2f,powers,powerf,scale]
+
+print(parameter)
