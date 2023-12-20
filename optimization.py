@@ -30,7 +30,10 @@ def calculate_repulsive_force(points, power):
             if i != j:
                 delta = points[i] - points[j]
                 distance = np.linalg.norm(delta)
-                force = delta / (distance ** power)
+                if (abs(distance ** power) >= 0.001):
+                    force = delta / (distance ** power)
+                else:
+                    force = delta
                 forces[i] += force
 
     return forces
@@ -76,10 +79,11 @@ def initial(n,m='uniform',w=1,random=False):
 
 def simulation(to_n_points,runs,params):
                # params[0],params[1],params[2],params[3],params[4],params[5],params[6]):
+               # r1s,r1f,c2s,c2f,powers,powerf,scale
     
     r1DecConstant = (params[1]/params[0])**(1/runs)
     c2DecConstant = (params[3]/params[2])**(1/runs)
-    powerDecConstant = (params[5]/powerf)**(1/runs)
+    powerDecConstant = (params[5]/params[4])**(1/runs)
     
     best = {}
     
@@ -131,16 +135,15 @@ def cost(pd_best):
     return score
 
 ## THIS IS THE ACTUAL OPTIMIZATION PART
-
 score = np.infty
-for i in range(1,100):
+for i in range(1,200):
     #random_walk_interval = (0,5]
     
     points_dist = pd.DataFrame()
 
     r1f = random.random()*10**(-2)
     
-    r1s = 1.75+random.random()
+    r1s = random.random()*5
     
     c2s=random.random()*10**(-1)
     
@@ -155,7 +158,7 @@ for i in range(1,100):
     params = [r1s,r1f,c2s,c2f,powers,powerf,scale]
     df1 = simulation(15,200,params)
         
-    score_1 =cost(df1)
+    score_1 = cost(df1)
     
     if (score_1 < score):
         
@@ -169,7 +172,7 @@ print(parameter)
 
 test1 = [cost(simulation(20, 20, parameter)) for i in range(1,20)]
 
-params2=[2.3200243756120966, 0.002262275383698383, 0.034820734711107415, 0.8342310303085669, 1.615408136622423, 6.879385239377747, 1.4282888849214053]
+params2=[0.27984081548062145, 0.0009133467987071153, 0.08212830327587153, 0.7402413330420198, 1.9668611465302106, 8.861866441573623, 1.5065837136966402]
 
 test2 = [cost(simulation(20,20, params2)) for i in range(1,20)]
 
