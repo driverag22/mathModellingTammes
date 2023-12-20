@@ -163,3 +163,25 @@ for i in range(1,2):
         parameter = [r1s,r1f,c2s,c2f,powers,powerf,scale]
 
 print(parameter)
+
+test1 = [cost(simulation(20,200,
+0.002030114685897073,
+ 0.028771262355712736,
+ 1.063302818182938,
+ 1.1052332081563456,
+ 1.4613255534190475,
+ 2.237871910720762,
+ 6.231147973546684)) for i in range(1,20)]
+
+test2 = [cost(simulation(20,200, 2.115832008737706,
+ 0.006021444096223975,
+ 0.014393304034470934,
+ 1.4238744127061507,
+ 1.4491259350544592,
+ 5.436509842397031,
+ 1.4431696752229017)) for i in range(1,20)];
+
+X=[i for i in range(7,7+len(test2))]
+plt.scatter(X,test1,color='red')
+plt.scatter(X,test2,color='blue')
+plt.show()
