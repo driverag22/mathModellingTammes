@@ -3,6 +3,8 @@ import math
 import pandas as pd
 import random
 from io import StringIO
+import matplotlib.pyplot as plt
+from mpl_toolkits.mplot3d import Axes3D
 
 def generate_points(n, w = 1, random=False): #Generates points on a kind of screwed up spiral not really
     # w is number of windings,
@@ -72,11 +74,12 @@ def initial(n,m='uniform',w=1,random=False):
         points = generate_points(n,w,random)
     return points
 
-def simulation(to_n_points,runs,r1s,r1f,c2s,c2f,powers,powerf,scale):
+def simulation(to_n_points,runs,params):
+               # params[0],params[1],params[2],params[3],params[4],params[5],params[6]):
     
-    r1DecConstant = (r1f/r1s)**(1/runs)
-    c2DecConstant = (c2f/c2s)**(1/runs)
-    powerDecConstant = (powerf/powerf)**(1/runs)
+    r1DecConstant = (params[1]/params[0])**(1/runs)
+    c2DecConstant = (params[3]/params[2])**(1/runs)
+    powerDecConstant = (params[5]/powerf)**(1/runs)
     
     best = {}
     
@@ -88,11 +91,11 @@ def simulation(to_n_points,runs,r1s,r1f,c2s,c2f,powers,powerf,scale):
         
         points = initial(num_points,'spiral')
         
-        r1 = r1s
+        r1 = params[0]
         
-        c2 = c2s
+        c2 = params[2]
         
-        power = powers
+        power = params[4]
         
         for iteration in range(runs):
             
@@ -100,7 +103,7 @@ def simulation(to_n_points,runs,r1s,r1f,c2s,c2f,powers,powerf,scale):
             
             walk = calculate_random_walk(num_points, r1)
             
-            points = update_points_rw(points, forces, walk, c2,scale)
+            points = update_points_rw(points, forces, walk, c2, params[6])
             
             min_distance = calculate_minimum_distance(points)
             
@@ -113,7 +116,7 @@ def simulation(to_n_points,runs,r1s,r1f,c2s,c2f,powers,powerf,scale):
             power *= powerDecConstant
             
     for num_points in range(7,to_n_points+1):
-        best[num_points] /= scale
+        best[num_points] /= params[6]
     
     return pd.DataFrame.from_dict(best, orient='index')
 
@@ -130,7 +133,7 @@ def cost(pd_best):
 ## THIS IS THE ACTUAL OPTIMIZATION PART
 
 score = np.infty
-for i in range(1,2):
+for i in range(1,100):
     #random_walk_interval = (0,5]
     
     points_dist = pd.DataFrame()
@@ -147,10 +150,10 @@ for i in range(1,2):
     
     powerf = 3+6*random.random()
     
-    # scale = 1+6*random.random()
-    scale = 3
-    
-    df1 = simulation(7,200,r1s,r1f,c2s,c2f,powers,powerf,scale)
+    scale = 1+6*random.random()
+
+    params = [r1s,r1f,c2s,c2f,powers,powerf,scale]
+    df1 = simulation(15,200,params)
         
     score_1 =cost(df1)
     
@@ -163,3 +166,14 @@ for i in range(1,2):
         parameter = [r1s,r1f,c2s,c2f,powers,powerf,scale]
 
 print(parameter)
+
+test1 = [cost(simulation(20, 20, parameter)) for i in range(1,20)]
+
+params2=[2.3200243756120966, 0.002262275383698383, 0.034820734711107415, 0.8342310303085669, 1.615408136622423, 6.879385239377747, 1.4282888849214053]
+
+test2 = [cost(simulation(20,20, params2)) for i in range(1,20)]
+
+X=[i for i in range(7,7+len(test2))]
+plt.scatter(X, test1,color='red')
+plt.scatter(X, test2,color='blue')
+plt.show()
