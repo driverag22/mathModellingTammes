@@ -180,3 +180,13 @@ X=[i for i in range(7,7+len(test2))]
 plt.scatter(X, test1,color='red')
 plt.scatter(X, test2,color='blue')
 plt.show()
+
+f = open('Parameter_20_20_score.txt', 'a')
+f.write('\n')
+f.write('-------------------------------------------------------')
+f.write('\n')
+f.write('parameter = '+str(parameter))
+f.write('\n')
+f.write('min: '+str(min(test1))+' mean: '+str(sum(test1)/len(test1))+' runs: '+str(len(test1)))
+f.close()
+
