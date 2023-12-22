@@ -5,6 +5,7 @@ import random
 from io import StringIO
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
+from matplotlib.animation import FuncAnimation
 
 def generate_points(n, w = 1, random=False): #Generates points on a kind of screwed up spiral not really
     # w is number of windings,
@@ -77,7 +78,7 @@ def initial(n,m='uniform',w=1,random=False):
         points = generate_points(n,w,random)
     return points
 
-def simulation(to_n_points,runs,params):
+def simulation(from_n_points,to_n_points,runs,params):
                # params[0],params[1],params[2],params[3],params[4],params[5],params[6]):
                # r1s,r1f,c2s,c2f,powers,powerf,scale
     
@@ -87,11 +88,11 @@ def simulation(to_n_points,runs,params):
     
     best = {}
     
-    for num_points in range(7,to_n_points+1):
+    for num_points in range(from_n_points ,to_n_points+1):
         
         best[num_points] = -np.infty
     
-    for num_points in range(7,to_n_points+1):
+    for num_points in range(from_n_points,to_n_points+1):
         
         points = initial(num_points,'spiral')
         
@@ -119,10 +120,14 @@ def simulation(to_n_points,runs,params):
             c2 *= c2DecConstant
             power *= powerDecConstant
             
-    for num_points in range(7,to_n_points+1):
+    for num_points in range(from_n_points,to_n_points+1):
         best[num_points] /= params[6]
     
-    return pd.DataFrame.from_dict(best, orient='index')
+    df1 = pd.DataFrame.from_dict(best, orient='index')
+    
+    df1 = df1.reset_index()
+    
+    return df1
 
 def cost(pd_best):
     
@@ -130,63 +135,64 @@ def cost(pd_best):
     
     for i in range(0,len(pd_best)):
         
-        score = score+(lit_sol(i+7).iloc[0,1]-pd_best.iloc[i,0])/lit_sol(i+7).iloc[0,1]
+        score = score+(lit_sol(pd_best.iloc[i,0]).iloc[0,1]-pd_best.iloc[i,1])/lit_sol(pd_best.iloc[i,0]).iloc[0,1]
     
     return score
 
-## THIS IS THE ACTUAL OPTIMIZATION PART
-score = np.infty
-for i in range(1,200):
+
+def random_training(from_n_points,to_n_points,random_runs,simulation_runs):
+    
+    score = np.infty
+    
+    for i in range(0,random_runs):
     #random_walk_interval = (0,5]
     
-    points_dist = pd.DataFrame()
+        points_dist = pd.DataFrame()
 
-    r1f = random.random()*10**(-2)
+        r1f = random.random()*10**(-2)
     
-    r1s = random.random()*5
+        r1s = random.random()*5
     
-    c2s=random.random()*10**(-1)
+        c2s=random.random()*10**(-1)
     
-    c2f = 0.5+random.random()
+        c2f = 0.5+random.random()
     
-    powers = 1+random.random()
+        powers = 1+random.random()
     
-    powerf = 3+6*random.random()
+        powerf = 3+6*random.random()
     
-    scale = 1+6*random.random()
+        scale = 1+6*random.random()
 
-    params = [r1s,r1f,c2s,c2f,powers,powerf,scale]
-    df1 = simulation(15,200,params)
+        params = [r1s,r1f,c2s,c2f,powers,powerf,scale]
         
-    score_1 = cost(df1)
+        df1 = simulation(from_n_points,to_n_points,simulation_runs,params)
+
+        score_1 = cost(df1)
+
+        if (score_1 < score):
+
+            points_dist = df1
+
+            score = score_1     
+
+            parameter = [r1s,r1f,c2s,c2f,powers,powerf,scale]
+            
+        #20_20 test   
+        
+    test1 = [cost(simulation(7,20,20,parameter)) for i in range(1,10)]
+        
+    f = open('Parameter_20_20_score.txt', 'a')
+    f.write('\n')
+    f.write('-------------------------------------------------------')
+    f.write('\n')
+    f.write('These parameters are trained with the points ranging from ['+str(from_n_points)+','+str(to_n_points)+'] for '+str(simulation_runs)+' runs.')
+    f.write('\n')
+    f.write('parameter = '+str(parameter))
+    f.write('\n')
+    f.write('min: '+str(min(test1))+' mean: '+str(sum(test1)/len(test1))+' runs: '+str(len(test1)))
+    f.close()
     
-    if (score_1 < score):
-        
-        points_dist = df1
-        
-        score = score_1     
-                  
-        parameter = [r1s,r1f,c2s,c2f,powers,powerf,scale]
-
-print(parameter)
-
-test1 = [cost(simulation(20, 20, parameter)) for i in range(1,20)]
-
-params2=[0.27984081548062145, 0.0009133467987071153, 0.08212830327587153, 0.7402413330420198, 1.9668611465302106, 8.861866441573623, 1.5065837136966402]
-
-test2 = [cost(simulation(20,20, params2)) for i in range(1,20)]
-
-X=[i for i in range(7,7+len(test2))]
-plt.scatter(X, test1,color='red')
-plt.scatter(X, test2,color='blue')
-plt.show()
-
-f = open('Parameter_20_20_score.txt', 'a')
-f.write('\n')
-f.write('-------------------------------------------------------')
-f.write('\n')
-f.write('parameter = '+str(parameter))
-f.write('\n')
-f.write('min: '+str(min(test1))+' mean: '+str(sum(test1)/len(test1))+' runs: '+str(len(test1)))
-f.close()
-
+    
+    X = [i for i in range(1,1+len(test1))];
+    
+    plt.scatter(X,test1,color='blue')    
