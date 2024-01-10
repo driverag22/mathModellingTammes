@@ -191,7 +191,15 @@ def random_training(from_n_points,to_n_points,random_runs,simulation_runs):
     f.write('\n')
     f.write('min: '+str(min(test1))+' mean: '+str(sum(test1)/len(test1))+' runs: '+str(len(test1)))
     f.close()
-    
+
+Plotting our solutions versus ideal solutions
+
+A_1 = simulation(7,20,5,parameter)
+A2=[(lit_sol(i+7).iloc[0,1]-A_1.iloc[i,1])/lit_sol(i+7).iloc[0,1] for i in range(0,len(A_1))]
+plt.scatter([i for i in range(7,7+len(A2))],A2,color='blue')
+plt.xlabel("Number of Points")
+plt.ylabel("Difference Between Minimum Distance")
+plt.title("--")
     
     X = [i for i in range(1,1+len(test1))];
     
