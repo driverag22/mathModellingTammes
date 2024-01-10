@@ -27,7 +27,7 @@ plt.plot(diff['Index'], diff['Value'], marker='o', linestyle='', color='r')
 plt.axhline(y = 0, color = 'b', linestyle = '--')
 plt.xlabel('Number of points')
 plt.ylabel('Difference')
-plt.title('Difference between general and basic solution')
+plt.title('Difference between general and basic solution (=gen-basic)')
 plt.grid(True)
 m = 0.03
 plt.ylim(-m,m)

@@ -27,7 +27,7 @@ plt.plot(diff['Index'], diff['Value'], marker='o', linestyle='', color='r')
 plt.axhline(y = 0, color = 'b', linestyle = '--')
 plt.xlabel('Number of points')
 plt.ylabel('Difference')
-plt.title('Difference between simulated annealing and basic solution')
+plt.title('Difference between simulated annealing and basic solution (=sim-basic)')
 plt.grid(True)
 # m = diff['Value'].max() * 1.2
 m = 0.03
