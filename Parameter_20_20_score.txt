@@ -1,0 +1,66 @@
+
+-----------------BEST_SHORT_SIMULATION----------------------------
+These parameters are trained with the points ranging from [10,10] for 50 runs.
+parameter = [1.0641723917890888, 0.006133056971853311, 0.060975172784012634, 1.1757620589875033, 1.9930921582514305, 4.316270910255709, 1.1138516943446317]
+min: 1.433409587557199 mean: 1.5537434637814433 runs: 9
+-------------------------------------------------------
+These parameters are trained with the points ranging from [10,10] for 100 runs.
+parameter = [2.1570486521637102, 0.00242398399246334, 0.09891627460851962, 1.4768719699218587, 1.2769856344824888, 3.680466662741576, 1.4244066599475986]
+min: 1.242240102822631 mean: 1.41839007245247 runs: 9
+--------------------BEST_LONG_SIMULATION------------------
+These parameters are trained with the points ranging from [30,30] for 200 and 1000 simulation runs and random runs respectively.
+parameter = [3.192218699671385, 0.0030790836221739216, 0.019572023852030242, 0.7362215270581951, 1.6511142182211773, 8.70432931178947, 2.0290056790537676]
+min: 3.060289277750433 mean: 3.3577802712389166 runs: 9
+-------------------------------------------------------
+These parameters are trained with the points ranging from [20,20] for 20 and 20 simulation runs and random runs respectively.
+parameter = [3.8307038330511816, 0.00245729805984229, 0.06976452442789825, 0.7227096526922788, 1.5805452229118724, 6.5063748612611665, 1.842307744014363]
+min: 1.8912278701972454 mean: 2.0714358614534882 runs: 9
+-------------------------------------------------------
+These parameters are trained with the points ranging from [20,20] for 30 and 1000 simulation runs and random runs respectively.
+parameter = [1.614129702969237, 0.0018455643841595803, 0.07935743951525322, 0.7379205477913006, 1.6614277375862265, 7.583466087001082, 1.6634922700583554]
+min: 1.564283391071893 mean: 1.7332231999871404 runs: 9
+-------------------------------------------------------
+These parameters are trained with the points ranging from [10,10] for 30 and 1000 simulation runs and random runs respectively.
+parameter = [2.388859526299977, 0.003540330656628149, 0.05292628642918038, 1.008310661978061, 1.6232116618759784, 8.91286045959604, 1.1261736868025252]
+min: 3.8881668288211464 mean: 4.706496046303227 runs: 9
+-------------------------------------------------------
+These parameters are trained with the points ranging from [10,10] for 400 and 1000 simulation runs and random runs respectively.
+parameter = [2.191194131040388, 0.004216315780649959, 0.06670556463118538, 1.448724986163457, 1.0847632292271445, 3.2829963159416997, 1.7834706908409006]
+min: 1.5041722300729394 mean: 1.7831980275667136 runs: 9
+-------------------------------------------------------
+These parameters are trained with the points ranging from [10,10] for 100 and 1000 simulation runs and random runs respectively.
+parameter = [0.9614296990517057, 0.009665565200154089, 0.01572863959413742, 1.0545866668581647, 1.0947446644456367, 4.262951906316188, 1.1223428880224946]
+min: 1.5093638678885979 mean: 1.6796766732424244 runs: 9
+-------------------------------------------------------
+These parameters are trained with the points ranging from [10,10] for 100 and 10000 simulation runs and random runs respectively.
+parameter = [2.686628579676067, 0.003172464010833256, 0.007798845436441591, 1.9797000952190658, 1.6812670630025586, 3.0051178526330196, 1.1351257293189367]
+min: 1.4555968692246515 mean: 1.5423395632317372 runs: 9
+-------------------------------------------------------
+These parameters are trained with the points ranging from [10,10] for 100 and 500 simulation runs and random runs respectively.
+parameter = [2.88368041509206, 0.002321367246347421, 0.0405442297088239, 1.5245991633848126, 1.9846372382702757, 3.511732956254493, 1.157403753724324]
+min: 1.2156707373569233 mean: 1.4381299375802297 runs: 9
+-------------------------------------------------------
+These parameters are trained with the points ranging from [10,10] for 100 and 1000 simulation runs and random runs respectively.
+parameter = [2.355939393769324, 0.006870141541131811, 0.05124776782192607, 1.7228753749975942, 1.28966253542915, 3.021083708513861, 1.221448249781338]
+min: 1.4260948088755403 mean: 1.593066924017746 runs: 9
+-------------------------------------------------------
+These parameters are trained with the points ranging from [10,10] for 50 and 5000 simulation runs and random runs respectively.
+parameter = [3.319474196141999, 0.005809403611223476, 0.012073571651960975, 1.8416408432236473, 1.6978792190407141, 3.1713950110694307, 1.0616340321368072]
+min: 1.3508276553376903 mean: 1.4397816669122094 runs: 9
+-------------------------------------------------------
+These parameters are trained with the points ranging from [30,30] for 50 and 100 simulation runs and random runs respectively.
+parameter = [2.906332914406489, 0.002258374721793939, 0.027019507675558174, 2.022960249850383, 1.6926232314932572, 3.682455291758891, 1.9623151789646769]
+min: 1.7126761793510683 mean: 1.7987040954326514 runs: 9
+-------------------------------------------------------
+These parameters are trained with the points ranging from [10,10] for 20 and 1 simulation runs and random runs respectively.
+parameter = [3.658192853916204, 0.0008792576731969126, 0.008582661438441368, 1.8834026981628145, 1.0327246334557172, 3.7707341458467267, 1.9757055034804467]
+min: 1.942174737802108 mean: 2.0456280339641015 runs: 9
+-------------------------------------------------------
+These parameters are trained with the points ranging from [20,20] for 50 and 100000 simulation runs and random runs respectively.
+parameter = [2.983280390986783, 0.0004837002146637293, 0.03601056122445474, 2.021323848897631, 1.9086710860444387, 3.279869721460901, 1.4186622874247075]
+min: 1.3202480595201913 mean: 1.434552673010821 runs: 9
+-------------------------------------------------------
+These parameters are trained with the points ranging from [40,40] for 100 and 10000 simulation runs and random runs respectively.
+parameter = [4.308728397359921, 0.0011503225377980364, 0.012729760853419092, 1.5794541103930761, 1.6103207308782785, 3.2346734954149055, 1.0376490186835916]
+min: 1.27491427871555 mean: 1.4130606666200687 runs: 9
+-------------------------------------------------------
