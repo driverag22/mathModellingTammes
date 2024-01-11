@@ -95,7 +95,7 @@ for num_points in range(lowerRange,upperRange+1):
         r1 *= r1DecConstant
         c2 *= c2DecConstant
         power *= powerDecConstant
-    best[num_points] /= 3
+    best[num_points] /= scaleFactor
     print(best[num_points])
     #def plot_sphere(ax):
     #    u, v = np.mgrid[0:2*np.pi:50j, 0:np.pi:50j]
