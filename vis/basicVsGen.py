@@ -25,10 +25,12 @@ diff['Value'] = genSolDf['Value'] - basicSolDf['Value']
 
 plt.plot(diff['Index'], diff['Value'], marker='o', linestyle='', color='r')
 plt.axhline(y = 0, color = 'b', linestyle = '--')
-plt.xlabel('Number of points')
-plt.ylabel('Difference')
-plt.title('Difference between general and basic solution (=gen-basic)')
+plt.xlabel('Number of points', fontsize=20)
+plt.ylabel('Difference', fontsize=20)
+plt.title('Difference between general and basic solution (=gen-basic)', fontsize=20)
 plt.grid(True)
 m = 0.03
 plt.ylim(-m,m)
+plt.xticks(fontsize=15)
+plt.yticks(fontsize=15)
 plt.show()

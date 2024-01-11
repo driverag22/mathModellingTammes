@@ -25,11 +25,13 @@ diff['Value'] = simAnnealingDf['Value'] - genSolDf['Value']
 
 plt.plot(diff['Index'], diff['Value'], marker='o', linestyle='', color='r')
 plt.axhline(y = 0, color = 'b', linestyle = '--')
-plt.xlabel('Number of points')
-plt.ylabel('Difference')
-plt.title('Difference between simulated annealing and general solution (=sim-gen)')
+plt.xlabel('Number of points', fontsize=20)
+plt.ylabel('Difference', fontsize=20)
+plt.title('Difference between simulated annealing and general solution (=sim-gen)', fontsize=20)
 plt.grid(True)
 # m = diff['Value'].max() * 1.2
 m = 0.03
 plt.ylim(-m,m)
+plt.xticks(fontsize=15)
+plt.yticks(fontsize=15)
 plt.show()
