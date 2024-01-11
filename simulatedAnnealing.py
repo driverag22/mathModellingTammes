@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 from matplotlib.animation import FuncAnimation
 
-def generate_points(n, w = 1, random=False): #Generates points on a kind of screwed up spiral not really
+def generate_points(n, w = 1, scaleFactor = 3, random=False): #Generates points on a kind of screwed up spiral not really
     # w is number of windings,
     # random determines whether angles are random. Should be off lol
     k = n-2
@@ -16,7 +16,7 @@ def generate_points(n, w = 1, random=False): #Generates points on a kind of scre
         points.append([np.sin(anglelist[i]),np.cos(anglelist[i]),1-2*i/k])
     points = np.array(points)
     points /= np.linalg.norm(points, axis=1)[:, None]
-    points *= 3
+    points *= scaleFactor
     return points
 
 def calculate_repulsive_force(points, power):
@@ -41,10 +41,10 @@ def calculate_random_walk(num_points, r1 = 0.01):
         offset[i] = np.random.normal(0,r1,3)
     return offset
         
-def update_points(points, forces, rand_walk, step_size=0.1):
+def update_points(points, forces, rand_walk, scaleFactor = 3, step_size=0.1):
     points += (rand_walk + step_size * forces)
     points /= np.linalg.norm(points, axis=1)[:, None]
-    points *= 3
+    points *= scaleFactor
     return points
 
 def calculate_minimum_distance(points):
@@ -59,16 +59,17 @@ def calculate_minimum_distance(points):
 
 best = {}
 lowerRange = 2
-upperRange = 70
-maxIter = 500
+upperRange = 200
+maxIter = 1000
 # frames = 500
 # sequence = []
-r1init = 1
-r1final = 0.001
-c2init = 0.05
-c2final = 5
-powerInitial = 1/2
-powerFinal =  5
+r1init = 3.2
+r1final = 0.003
+c2init = 0.0195
+c2final = 0.736
+powerInitial = 1.65
+powerFinal =  8.7
+scaleFactor = 2.029
 r1DecConstant = (r1final/r1init)**(1/maxIter)
 c2DecConstant = (c2final/c2init)**(1/maxIter)
 powerDecConstant = (powerFinal/powerInitial)**(1/maxIter)
@@ -76,7 +77,7 @@ for num_points in range(lowerRange,upperRange+1):
     best[num_points] = -np.inf
 for num_points in range(lowerRange,upperRange+1):
     print(num_points)
-    points = generate_points(num_points, math.ceil(num_points/10), False)
+    points = generate_points(num_points, math.ceil(num_points/10), scaleFactor, False)
     r1 = r1init ## random walk param, offset each coordinate with U[-r1, r1]
     c2 = c2init ## step size (force parameter)
     power = powerInitial
@@ -86,7 +87,7 @@ for num_points in range(lowerRange,upperRange+1):
         #     sequence.append(points.copy())
         forces = calculate_repulsive_force(points, power)
         walk = calculate_random_walk(num_points, r1)
-        points = update_points(points, forces, walk, c2)
+        points = update_points(points, forces, walk, scaleFactor, c2)
     
         min_distance_ = calculate_minimum_distance(points)
         if (min_distance_ > best[num_points]):
