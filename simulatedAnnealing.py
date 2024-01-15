@@ -63,13 +63,14 @@ upperRange = 200
 maxIter = 1000
 # frames = 500
 # sequence = []
-r1init = 3.2
-r1final = 0.003
-c2init = 0.0195
-c2final = 0.736
-powerInitial = 1.65
-powerFinal =  8.7
-scaleFactor = 2.029
+r1init = 1.43
+r1final = 0.0002
+c2init = 0.0369
+c2final = 1.091
+powerInitial = 1.419
+powerFinal =  3.355
+scaleFactor = 1.244
+# parameter = [1.4287813154425049, 0.00016871670937294693, 0.03694326343695675, 1.0908696537706244, 1.41877422689782, 3.3546512290875095, 1.2442189088958135]
 r1DecConstant = (r1final/r1init)**(1/maxIter)
 c2DecConstant = (c2final/c2init)**(1/maxIter)
 powerDecConstant = (powerFinal/powerInitial)**(1/maxIter)
@@ -137,7 +138,7 @@ for num_points in range(lowerRange,upperRange+1):
     ## Display the animation
     #plt.show()
 
-f = open("results/200iter_simAnnealing.txt", "a")
+f = open("final2_simAnnealing.txt", "a")
 for num_points in range(lowerRange, upperRange+1):
     f.write(str(num_points))
     f.write("\n")
