@@ -42,12 +42,29 @@ simAnnealingDf = genDataFrame("./final_simAnnealing.txt")
 #     if ((lit_sol(i).iloc[0,1]-simAnnealingDf['Value'].get(i-2))/lit_sol(i).iloc[0,1] < 0):
 #         print(i)
 #         print(simAnnealingDf['Value'].get(i-2))
-A2=[ max(0,((lit_sol(i).iloc[0,1]-simAnnealingDf['Value'].get(i-2))/lit_sol(i).iloc[0,1])) for i in range(6,len(simAnnealingDf))]
+# new_data = {'Values': [lit_sol(i).iloc[0,1] for i in range(6,201)]}
+# litSolDf = pd.DataFrame(new_data)
 
-plt.scatter([i for i in range(7,7+len(A2))],A2,color='blue')
-plt.xlabel("Number of Points")
-plt.ylabel("Difference Between Minimum Distance")
-plt.title("--")
+sol=[ simAnnealingDf['Value'].get(i-2) for i in range(6,len(simAnnealingDf))]
+lit=[ (lit_sol(i).iloc[0,1]) for i in range(6,len(simAnnealingDf))]
+print(sol)
+print(lit)
+
+plt.scatter([i for i in range(7,7+len(sol))],sol,color='blue', label="Our solution")
+plt.scatter([i for i in range(7,7+len(sol))],lit,color='red', label="Literature solution")
+plt.xlabel("Number of Points", fontsize=20)
+plt.ylabel("Minimum Distance", fontsize=20)
+plt.xticks(fontsize=20)
+plt.yticks(fontsize=20)
+plt.legend(fontsize=15)
+plt.show()
+
+A3=[ ((lit_sol(i).iloc[0,1]-simAnnealingDf['Value'].get(i-2))/lit_sol(i).iloc[0,1]) for i in range(6,len(simAnnealingDf))]
+plt.scatter([i for i in range(7,7+len(A3))],A3,color='blue')
+plt.xlabel("Number of Points", fontsize=20)
+plt.ylabel("Relative difference in minimum distance", fontsize=20)
+plt.xticks(fontsize=20)
+plt.yticks(fontsize=20)
 plt.show()
     
 # X = [i for i in range(1,1+len(test1))];
