@@ -59,14 +59,27 @@ plt.yticks(fontsize=20)
 plt.legend(fontsize=15)
 plt.show()
 
-A3=[ ((lit_sol(i).iloc[0,1]-simAnnealingDf['Value'].get(i-2))/lit_sol(i).iloc[0,1]) for i in range(6,len(simAnnealingDf))]
+A3=[ ((lit_sol(i).iloc[0,1]-simAnnealingDf['Value'].get(i-2))/lit_sol(i).iloc[0,1]) for i in range(6,len(simAnnealingDf)+1)]
 plt.scatter([i for i in range(7,7+len(A3))],A3,color='blue')
 plt.xlabel("Number of Points", fontsize=20)
 plt.ylabel("Relative difference in minimum distance", fontsize=20)
 plt.xticks(fontsize=20)
 plt.yticks(fontsize=20)
+
+# Adding the function f(x) = 2x to the plot
+x = np.arange(0, 201, 1)  # Values from 0 to 100 with step 1
+y_function = 0.0003 * x + 0.035
+plt.plot(x, y_function, 'g-', label='f(n) = 0.0003 * n + 0.035', color='red')
+
 plt.show()
-    
+
+x = np.arange(6, 200, 1)  # Values from 0 to 100 with step 1
+y_function = 0.0003 * x + 0.035
+print(y_function)
+print(A3)
+print(sum(abs(A3 - y_function))/len(A3))
+print(max(abs(A3 - y_function)))    
+
 # X = [i for i in range(1,1+len(test1))];
     
 # plt.scatter(X,test1,color='blue')    
